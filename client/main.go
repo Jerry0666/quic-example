@@ -73,7 +73,6 @@ func Client() error {
 
 func test(mp quic.MPConnection) {
 	time.Sleep(10 * time.Second)
-	fmt.Println("client initiate PV!")
 	err := mp.InitiatePathValidation()
 	if err != nil {
 		fmt.Printf("encounter err:%v\n", err)
