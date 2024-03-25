@@ -1,4 +1,2 @@
 # quic-example
-test the migration...
-
-teesting
+simple quic example
