@@ -45,14 +45,14 @@ func Server() error {
 	for {
 		size := 256
 		buf := make([]byte, size)
-		buf, err = conn.ReceiveMessage()
+		buf, err = conn.ReceiveDatagram(context.Background())
 		if err != nil {
 			fmt.Println(err)
 			break
 		}
 		fmt.Printf("Got: %s", buf)
 		sendData := []byte("testing... testing...")
-		conn.SendMessage(sendData)
+		conn.SendDatagram(sendData)
 	}
 	return err
 
