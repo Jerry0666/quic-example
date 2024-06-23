@@ -29,14 +29,17 @@ func Client() error {
 		InsecureSkipVerify: true,
 		NextProtos:         []string{"quic-echo-example"},
 	}
-	conn, err := quic.DialAddr(context.Background(), addr, tlsConf, &quic.Config{
+	conn, err := quic.DialAddrFix(context.Background(), addr, tlsConf, &quic.Config{
 		KeepAlivePeriod: time.Minute * 5,
 		EnableDatagrams: true,
-	})
+	}, "10.0.0.1", 8000)
 	if err != nil {
 		fmt.Println("conn err")
 		return err
 	}
+
+	tr := conn.GetTransport()
+	fmt.Printf("GetTransport: \n%+v\n", tr)
 
 	// mpquic, ok := conn.(quic.MPConnection)
 	// if ok {
