@@ -39,6 +39,7 @@ func Client() error {
 	}
 
 	tr := conn.GetTransport()
+	tr.SetBackupConn("11.0.0.1", 7000)
 	fmt.Printf("GetTransport: \n%+v\n", tr)
 
 	// mpquic, ok := conn.(quic.MPConnection)
@@ -59,9 +60,10 @@ func Client() error {
 	conn.SendDatagram(sendData)
 
 	reader := bufio.NewReader(os.Stdin)
+	i := 0
 	for {
-		fmt.Println("What message do you want to send?")
-		fmt.Print("message: ")
+		i++
+		fmt.Printf("i= %d What message do you want to send?\n", i)
 		text, _ := reader.ReadString('\n')
 		sendData := []byte(text)
 		err = conn.SendDatagram(sendData)
@@ -70,6 +72,10 @@ func Client() error {
 			return err
 		}
 		time.Sleep(1 * time.Second)
+		if i == 3 {
+			fmt.Println("probe the path!")
+			conn.ProbePath(tr)
+		}
 	}
 }
 
